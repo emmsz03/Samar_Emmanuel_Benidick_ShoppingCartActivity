@@ -2,13 +2,11 @@ using System;
 
 class Product
 {
-    // Fields
     public int Id;
     public string Name;
     public double Price;
     public int RemainingStock;
 
-    // Methods
     public double GetItemTotal(int quantity)
     {
         return Price * quantity;
@@ -42,7 +40,7 @@ class Product
 
 class Program
 {
-   static void Main()
+static void Main()
 {
     Product[] products = new Product[]
     {
@@ -56,4 +54,41 @@ class Program
     {
         p.DisplayProduct();
     }
+
+    Console.Write("Enter product number: ");
+    string inputProduct = Console.ReadLine();
+
+    if (!int.TryParse(inputProduct, out int productChoice) || productChoice < 1 || productChoice > products.Length)
+    {
+        Console.WriteLine("Invalid product number.");
+        return;
+    }
+
+    Console.Write("Enter quantity: ");
+    string inputQty = Console.ReadLine();
+
+    if (!int.TryParse(inputQty, out int quantity) || quantity <= 0)
+    {
+        Console.WriteLine("Invalid quantity.");
+        return;
+    }
+
+    Product selected = products[productChoice - 1];
+
+    if (selected.RemainingStock == 0)
+    {
+        Console.WriteLine("Product is out of stock.");
+        return;
+    }
+
+    if (!selected.HasEnoughStock(quantity))
+    {
+        Console.WriteLine("Not enough stock available.");
+        return;
+    }
+
+    double total = selected.GetItemTotal(quantity);
+    selected.DeductStock(quantity);
+
+    Console.WriteLine($"Added to cart! Total: ₱{total}");
 }
