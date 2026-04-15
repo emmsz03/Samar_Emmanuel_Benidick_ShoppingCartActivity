@@ -31,3 +31,13 @@ Console-based shopping cart system in C# with stock tracking and discount.
 
 - “How do I stop users from entering invalid quantities like 0 or negative numbers?”
   - Used to add validation rules ensuring only valid purchase quantities are accepted.
+
+  ## Changes Made During Development
+
+- Reorganized code structure for better readability and flow.
+- Improved input validation to handle invalid and unexpected user inputs.
+- Fixed stock issue where users could previously reduce stock below zero.
+- Updated cart logic to avoid duplicate entries and instead update existing ones.
+- Adjusted output formatting to make receipt and stock display clearer.
+- Refined discount calculation to ensure accurate final total computation.
+- Enhanced overall program stability and user interaction flow.
