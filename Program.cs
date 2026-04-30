@@ -505,3 +505,24 @@ namespace ShoppingCartSystem
                 orderHistory[orderCount] = receipt;
                 orderCount++;
             }
+
+            receipt.PrintReceipt();
+            ShowLowStockAlerts();
+
+            for (int i = 0; i < cartCount; i++)
+                cart[i] = null;
+            cartCount = 0;
+
+            Console.Write("  View order history? (Y/N): ");
+            string ans = Console.ReadLine().Trim().ToUpper();
+
+            while (ans != "Y" && ans != "N")
+            {
+                Console.Write("  Invalid input. Please enter Y or N only: ");
+                ans = Console.ReadLine().Trim().ToUpper();
+            }
+
+            if (ans == "Y")
+                ShowOrderHistory();
+        }
+
