@@ -551,6 +551,55 @@ namespace ShoppingCartSystem
                 ans = Console.ReadLine().Trim().ToUpper();
             }
 
+            if (ans == "N")
+            {
+                PressAnyKey();
+                return;
+            }
+
+            Console.Write($"  Enter order number (1-{orderCount}): ");
+            string input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int idx) || idx < 1 || idx > orderCount)
+            {
+                Console.WriteLine("  Invalid input.");
+                PressAnyKey();
+                return;
+            }
+
+            orderHistory[idx - 1].PrintReceipt();
+            PressAnyKey();
+        }
+
+        static void ShowLowStockAlerts()
+        {
+            bool anyLow = false;
+
+            Console.WriteLine("──────────  LOW STOCK ALERTS  ────────────");
+            for (int i = 0; i < menu.Length; i++)
+            {
+                if (menu[i].Stock <= LOW_STOCK_LEVEL)
+                {
+                    Console.WriteLine($"  ! LOW STOCK: {menu[i].Name} has only {menu[i].Stock} unit(s) left!");
+                    anyLow = true;
+                }
+            }
+
+            if (!anyLow)
+                Console.WriteLine("  All products have sufficient stock.");
+
+            Console.WriteLine("──────────────────────────────────────────");
+        }
+
+        static void PressAnyKey()
+        {
+            Console.Write("\n  Press any key to continue...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+    }
+}
+
 
             
 
