@@ -532,4 +532,12 @@ namespace ShoppingCartSystem
 
             if (orderCount == 0)
             {
+                 Console.WriteLine("  No completed orders yet.");
+                PressAnyKey();
+                return;
+            }
 
+
+            
+
+                
