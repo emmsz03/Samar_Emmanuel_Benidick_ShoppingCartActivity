@@ -487,3 +487,21 @@ namespace ShoppingCartSystem
                 break;
             }
 
+            double change = payment - finalTotal;
+
+            receiptNo++;
+            string receiptNumber = receiptNo.ToString("D4");
+            string dateTime      = System.DateTime.Now.ToString("MMMM dd, yyyy hh:mm tt");
+
+            CartItem[] snapshot = new CartItem[cartCount];
+            for (int i = 0; i < cartCount; i++)
+                snapshot[i] = cart[i];
+
+            Receipt receipt = new Receipt(receiptNumber, dateTime, snapshot, cartCount,
+                                          grandTotal, discount, finalTotal, payment, change);
+
+            if (orderCount < MAX_ORDERS)
+            {
+                orderHistory[orderCount] = receipt;
+                orderCount++;
+            }
