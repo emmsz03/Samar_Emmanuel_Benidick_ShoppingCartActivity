@@ -96,3 +96,14 @@ namespace ShoppingCartSystem
             Console.WriteLine("╚══════════════════════════════════════════╝");
             Console.Write("\n  Enter your choice: ");
         }
+
+        static void BrowseAllProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("─────────────  ALL PRODUCTS  ─────────────");
+            for (int i = 0; i < menu.Length; i++)
+                menu[i].Display();
+            Console.WriteLine("──────────────────────────────────────────");
+            PressAnyKey();
+        }
+
