@@ -446,3 +446,15 @@ namespace ShoppingCartSystem
             PressAnyKey();
         }
 
+        static void Checkout()
+        {
+            Console.Clear();
+
+            if (cartCount == 0)
+            {
+                Console.WriteLine("  Your cart is empty. Add items before checking out.");
+                PressAnyKey();
+                return;
+            }
+
+            
