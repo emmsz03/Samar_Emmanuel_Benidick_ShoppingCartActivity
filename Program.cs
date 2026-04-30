@@ -107,7 +107,7 @@ namespace ShoppingCartSystem
             PressAnyKey();
         }
 
-static void SearchProduct()
+        static void SearchProduct()
         {
             Console.Clear();
             Console.Write("  Enter product name to search: ");
@@ -132,7 +132,7 @@ static void SearchProduct()
             PressAnyKey();
         }
 
-static void BrowseByCategory()
+        static void BrowseByCategory()
         {
             Console.Clear();
             Console.WriteLine("─────────────  CATEGORIES  ───────────────");
@@ -173,7 +173,8 @@ static void BrowseByCategory()
             Console.WriteLine("──────────────────────────────────────────");
             PressAnyKey();
         }
-static void AddToCart()
+        
+        static void AddToCart()
         {
             Console.Clear();
             Console.WriteLine("─────────────  ALL PRODUCTS  ─────────────");
@@ -246,7 +247,8 @@ static void AddToCart()
             Console.WriteLine($"\n  Done! {selected.Name} x{qty} added to cart!");
             PressAnyKey();
         }
- static void CartMenu()
+        
+        static void CartMenu()
         {
             bool inCart = true;
 
@@ -300,7 +302,7 @@ static void AddToCart()
             }
         }
 
- static void ViewCart()
+        static void ViewCart()
         {
             if (cartCount == 0)
             {
@@ -326,7 +328,8 @@ static void AddToCart()
             Console.WriteLine($"  Final Total : PHP {finalTotal:F2}");
             Console.WriteLine("──────────────────────────────────────────");
         }
- static void UpdateCartItem()
+        
+        static void UpdateCartItem()
         {
             if (cartCount == 0)
             {
@@ -377,7 +380,7 @@ static void AddToCart()
             PressAnyKey();
         }
 
-static void RemoveCartItem()
+        static void RemoveCartItem()
         {
             if (cartCount == 0)
             {
@@ -411,3 +414,35 @@ static void RemoveCartItem()
             Console.WriteLine($"  Done! {item.Product.Name} removed from cart.");
             PressAnyKey();
         }
+
+        static void ClearCart()
+        {
+            if (cartCount == 0)
+            {
+                Console.WriteLine("  Cart is already empty.");
+                PressAnyKey();
+                return;
+            }
+
+            Console.Write("  Are you sure you want to clear the cart? (Y/N): ");
+            string confirm = Console.ReadLine().Trim().ToUpper();
+
+            while (confirm != "Y" && confirm != "N")
+            {
+                Console.Write("  Invalid input. Please enter Y or N only: ");
+                confirm = Console.ReadLine().Trim().ToUpper();
+            }
+
+            if (confirm == "N") return;
+
+            for (int i = 0; i < cartCount; i++)
+            {
+                cart[i].Product.Stock += cart[i].Quantity;
+                cart[i] = null;
+            }
+
+            cartCount = 0;
+            Console.WriteLine("  Cart cleared successfully.");
+            PressAnyKey();
+        }
+
