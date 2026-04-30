@@ -377,3 +377,37 @@ static void AddToCart()
             PressAnyKey();
         }
 
+static void RemoveCartItem()
+        {
+            if (cartCount == 0)
+            {
+                Console.WriteLine("  Cart is empty.");
+                PressAnyKey();
+                return;
+            }
+
+            ViewCart();
+            Console.Write("\n  Enter item number to remove (0 to cancel): ");
+            string input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int idx) || idx < 0 || idx > cartCount)
+            {
+                Console.WriteLine("  Invalid input.");
+                PressAnyKey();
+                return;
+            }
+
+            if (idx == 0) return;
+
+            CartItem item       = cart[idx - 1];
+            item.Product.Stock += item.Quantity;
+
+            for (int i = idx - 1; i < cartCount - 1; i++)
+                cart[i] = cart[i + 1];
+
+            cart[cartCount - 1] = null;
+            cartCount--;
+
+            Console.WriteLine($"  Done! {item.Product.Name} removed from cart.");
+            PressAnyKey();
+        }
