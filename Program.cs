@@ -246,3 +246,57 @@ static void AddToCart()
             Console.WriteLine($"\n  Done! {selected.Name} x{qty} added to cart!");
             PressAnyKey();
         }
+ static void CartMenu()
+        {
+            bool inCart = true;
+
+            while (inCart)
+            {
+                Console.Clear();
+                Console.WriteLine("╔══════════════════════════════════════════╗");
+                Console.WriteLine("║              CART MENU                   ║");
+                Console.WriteLine("╠══════════════════════════════════════════╣");
+                Console.WriteLine("║  1. View Cart                            ║");
+                Console.WriteLine("║  2. Update Item Quantity                 ║");
+                Console.WriteLine("║  3. Remove an Item                       ║");
+                Console.WriteLine("║  4. Clear Cart                           ║");
+                Console.WriteLine("║  5. Back to Main Menu                    ║");
+                Console.WriteLine("╚══════════════════════════════════════════╝");
+                Console.Write("\n  Enter your choice: ");
+
+                string choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    Console.Clear();
+                    ViewCart();
+                    PressAnyKey();
+                }
+                else if (choice == "2")
+                {
+                    Console.Clear();
+                    UpdateCartItem();
+                }
+                else if (choice == "3")
+                {
+                    Console.Clear();
+                    RemoveCartItem();
+                }
+                else if (choice == "4")
+                {
+                    Console.Clear();
+                    ClearCart();
+                }
+                else if (choice == "5")
+                {
+                    inCart = false;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("  Invalid choice. Please enter 1 to 5.");
+                    PressAnyKey();
+                }
+            }
+        }
+
