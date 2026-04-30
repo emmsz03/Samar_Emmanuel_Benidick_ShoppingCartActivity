@@ -300,3 +300,29 @@ static void AddToCart()
             }
         }
 
+ static void ViewCart()
+        {
+            if (cartCount == 0)
+            {
+                Console.WriteLine("  Your cart is empty.");
+                return;
+            }
+
+            double total = 0;
+            Console.WriteLine("─────────────  YOUR CART  ────────────────");
+            for (int i = 0; i < cartCount; i++)
+            {
+                cart[i].Display(i + 1);
+                total += cart[i].GetSubtotal();
+            }
+
+            double disc       = total >= DISCOUNT_MIN ? total * DISCOUNT_RATE : 0;
+            double finalTotal = total - disc;
+
+            Console.WriteLine("──────────────────────────────────────────");
+            Console.WriteLine($"  Grand Total : PHP {total:F2}");
+            if (disc > 0)
+                Console.WriteLine($"  Discount    : PHP -{disc:F2} (10% off)");
+            Console.WriteLine($"  Final Total : PHP {finalTotal:F2}");
+            Console.WriteLine("──────────────────────────────────────────");
+        }
