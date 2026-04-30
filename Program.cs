@@ -107,3 +107,28 @@ namespace ShoppingCartSystem
             PressAnyKey();
         }
 
+static void SearchProduct()
+        {
+            Console.Clear();
+            Console.Write("  Enter product name to search: ");
+            string keyword = Console.ReadLine().Trim().ToLower();
+
+            bool found = false;
+            Console.WriteLine("\n  Search Results:");
+            Console.WriteLine("──────────────────────────────────────────");
+            for (int i = 0; i < menu.Length; i++)
+            {
+                if (menu[i].Name.ToLower().Contains(keyword))
+                {
+                    menu[i].Display();
+                    found = true;
+                }
+            }
+
+            if (!found)
+                Console.WriteLine("  No products matched your search.");
+
+            Console.WriteLine("──────────────────────────────────────────");
+            PressAnyKey();
+        }
+
