@@ -457,4 +457,33 @@ namespace ShoppingCartSystem
                 return;
             }
 
-            
+            ViewCart();
+
+            double grandTotal = 0;
+            for (int i = 0; i < cartCount; i++)
+                grandTotal += cart[i].GetSubtotal();
+
+            double discount   = grandTotal >= DISCOUNT_MIN ? grandTotal * DISCOUNT_RATE : 0;
+            double finalTotal = grandTotal - discount;
+
+            double payment = 0;
+            while (true)
+            {
+                Console.Write($"\n  Enter payment amount (Final Total: PHP {finalTotal:F2}): ");
+                string input = Console.ReadLine().Trim();
+
+                if (!double.TryParse(input, out payment) || payment <= 0)
+                {
+                    Console.WriteLine("  Invalid input. Please enter a valid numeric amount.");
+                    continue;
+                }
+
+                if (payment < finalTotal)
+                {
+                    Console.WriteLine($"  Insufficient payment. You need at least PHP {finalTotal:F2}.");
+                    continue;
+                }
+
+                break;
+            }
+
