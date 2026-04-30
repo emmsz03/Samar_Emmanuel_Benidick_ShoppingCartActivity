@@ -173,3 +173,76 @@ static void BrowseByCategory()
             Console.WriteLine("──────────────────────────────────────────");
             PressAnyKey();
         }
+static void AddToCart()
+        {
+            Console.Clear();
+            Console.WriteLine("─────────────  ALL PRODUCTS  ─────────────");
+            for (int i = 0; i < menu.Length; i++)
+                menu[i].Display();
+            Console.WriteLine("──────────────────────────────────────────");
+
+            Console.Write("\n  Enter product number to add (0 to cancel): ");
+            string input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int id) || id < 0 || id > menu.Length)
+            {
+                Console.WriteLine("  Invalid input.");
+                PressAnyKey();
+                return;
+            }
+
+            if (id == 0) return;
+
+            Product selected = menu[id - 1];
+
+            if (selected.Stock == 0)
+            {
+                Console.WriteLine($"  Sorry, {selected.Name} is out of stock.");
+                PressAnyKey();
+                return;
+            }
+
+            Console.Write($"  Enter quantity (available: {selected.Stock}): ");
+            string qInput = Console.ReadLine();
+
+            if (!int.TryParse(qInput, out int qty) || qty <= 0)
+            {
+                Console.WriteLine("  Invalid quantity.");
+                PressAnyKey();
+                return;
+            }
+
+            if (qty > selected.Stock)
+            {
+                Console.WriteLine($"  Not enough stock. Only {selected.Stock} left.");
+                PressAnyKey();
+                return;
+            }
+
+            bool found = false;
+            for (int i = 0; i < cartCount; i++)
+            {
+                if (cart[i].Product.Id == selected.Id)
+                {
+                    cart[i].Quantity += qty;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                if (cartCount >= MAX_CART)
+                {
+                    Console.WriteLine("  Cart is full.");
+                    PressAnyKey();
+                    return;
+                }
+                cart[cartCount] = new CartItem(selected, qty);
+                cartCount++;
+            }
+
+            selected.Stock -= qty;
+            Console.WriteLine($"\n  Done! {selected.Name} x{qty} added to cart!");
+            PressAnyKey();
+        }
