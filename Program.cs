@@ -1,118 +1,98 @@
 using System;
 
-class Product
+namespace ShoppingCartSystem
 {
-    public int Id;
-    public string Name;
-    public double Price;
-    public int RemainingStock;
-
-    public double GetItemTotal(int quantity)
+    class Program
     {
-        return Price * quantity;
-    }
+        const int MAX_CART        = 20;
+        const int MAX_ORDERS      = 50;
+        const int LOW_STOCK_LEVEL = 5;
+        const double DISCOUNT_MIN  = 5000;
+        const double DISCOUNT_RATE = 0.10;
 
-    public bool HasEnoughStock(int quantity)
-    {
-        return quantity <= RemainingStock;
-    }
+        static Product[]  menu         = new Product[9];
+        static CartItem[] cart         = new CartItem[MAX_CART];
+        static int        cartCount    = 0;
+        static Receipt[]  orderHistory = new Receipt[MAX_ORDERS];
+        static int        orderCount   = 0;
+        static int        receiptNo    = 0;
 
-    public void DeductStock(int quantity)
-    {
-        RemainingStock -= quantity;
-    }
-
-    public void DisplayProduct()
-    {
-        Console.WriteLine($"{Id}. {Name} - PHP {Price} (Stock: {RemainingStock})");
-    }
-}
-
-class Program
-{
-    static void Main()
-    {
-        Product[] products = new Product[]
+        static void Main()
         {
-            new Product { Id = 1, Name = "Laptop", Price = 30000, RemainingStock = 5 },
-            new Product { Id = 2, Name = "Mouse", Price = 500, RemainingStock = 0 },
-            new Product { Id = 3, Name = "Keyboard", Price = 1500, RemainingStock = 7 },
-            new Product { Id = 4, Name = "Headset", Price = 1200, RemainingStock = 3 },
-            new Product { Id = 5, Name = "USB Flash Drive", Price = 350, RemainingStock = 0 }
-        };
+            menu[0] = new Product(1, "Laptop",         30000, 5,   "Electronics");
+            menu[1] = new Product(2, "Mouse",           500,   10,  "Electronics");
+            menu[2] = new Product(3, "Keyboard",        1500,  7,   "Electronics");
+            menu[3] = new Product(4, "Headset",         1200,  3,   "Electronics");
+            menu[4] = new Product(5, "USB Flash Drive", 350,   6,   "Electronics");
+            menu[5] = new Product(6, "T-Shirt",         299,   20,  "Clothing");
+            menu[6] = new Product(7, "Jeans",           899,   15,  "Clothing");
+            menu[7] = new Product(8, "Rice (5kg)",      250,   30,  "Food");
+            menu[8] = new Product(9, "Instant Noodles", 15,    100, "Food");
 
-        int[] cartQty = new int[products.Length];
-        double grandTotal = 0;
+            bool running = true;
 
-        Console.WriteLine("\n--- STORE MENU ---");
-        foreach (var p in products)
-        {
-            p.DisplayProduct();
-        }
-
-        Console.Write("Enter product number: ");
-        if (!int.TryParse(Console.ReadLine(), out int productChoice) ||
-            productChoice < 1 || productChoice > products.Length)
-        {
-            Console.WriteLine("Invalid product.");
-            return;
-        }
-
-        Console.Write("Enter quantity: ");
-        if (!int.TryParse(Console.ReadLine(), out int qty) || qty <= 0)
-        {
-            Console.WriteLine("Invalid quantity.");
-            return;
-        }
-
-        Product selected = products[productChoice - 1];
-
-        if (selected.RemainingStock == 0)
-        {
-            Console.WriteLine("Out of stock.");
-            return;
-        }
-
-        if (!selected.HasEnoughStock(qty))
-        {
-            Console.WriteLine("Not enough stock.");
-            return;
-        }
-
-        cartQty[productChoice - 1] += qty;
-
-        double itemTotal = selected.GetItemTotal(qty);
-        grandTotal += itemTotal;
-
-        selected.DeductStock(qty);
-
-        Console.WriteLine("Added to cart!");
-
-        Console.WriteLine("\nRECEIPT:");
-        for (int i = 0; i < products.Length; i++)
-        {
-            if (cartQty[i] > 0)
+            while (running)
             {
-                double total = products[i].GetItemTotal(cartQty[i]);
-                Console.WriteLine($"{products[i].Name} x{cartQty[i]} = PHP {total}");
+                ShowMainMenu();
+                string choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    BrowseAllProducts();
+                }
+                else if (choice == "2")
+                {
+                    SearchProduct();
+                }
+                else if (choice == "3")
+                {
+                    BrowseByCategory();
+                }
+                else if (choice == "4")
+                {
+                    AddToCart();
+                }
+                else if (choice == "5")
+                {
+                    CartMenu();
+                }
+                else if (choice == "6")
+                {
+                    Checkout();
+                }
+                else if (choice == "7")
+                {
+                    ShowOrderHistory();
+                }
+                else if (choice == "8")
+                {
+                    Console.Clear();
+                    Console.WriteLine("\n  Thank you for shopping with us! Goodbye!");
+                    running = false;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("\n  Invalid choice. Please enter 1 to 8.");
+                    PressAnyKey();
+                }
             }
         }
 
-        Console.WriteLine($"Grand Total: PHP {grandTotal}");
-
-        double discount = 0;
-        if (grandTotal >= 5000)
+        static void ShowMainMenu()
         {
-            discount = grandTotal * 0.10;
-            Console.WriteLine($"Discount: PHP {discount}");
+            Console.Clear();
+            Console.WriteLine("╔══════════════════════════════════════════╗");
+            Console.WriteLine("║    WELCOME TO THE ENHANCED SHOP v2.0    ║");
+            Console.WriteLine("╠══════════════════════════════════════════╣");
+            Console.WriteLine("║  1. Browse All Products                  ║");
+            Console.WriteLine("║  2. Search Product by Name               ║");
+            Console.WriteLine("║  3. Browse by Category                   ║");
+            Console.WriteLine("║  4. Add Item to Cart                     ║");
+            Console.WriteLine("║  5. Manage Cart                          ║");
+            Console.WriteLine("║  6. Checkout                             ║");
+            Console.WriteLine("║  7. View Order History                   ║");
+            Console.WriteLine("║  8. Exit                                 ║");
+            Console.WriteLine("╚══════════════════════════════════════════╝");
+            Console.Write("\n  Enter your choice: ");
         }
-
-        Console.WriteLine($"Final Total: PHP {grandTotal - discount}");
-
-        Console.WriteLine("\nUPDATED STOCK:");
-        foreach (var p in products)
-        {
-            p.DisplayProduct();
-        }
-    }
-}
