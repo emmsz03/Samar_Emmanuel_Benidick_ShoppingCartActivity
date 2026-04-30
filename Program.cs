@@ -326,3 +326,54 @@ static void AddToCart()
             Console.WriteLine($"  Final Total : PHP {finalTotal:F2}");
             Console.WriteLine("──────────────────────────────────────────");
         }
+ static void UpdateCartItem()
+        {
+            if (cartCount == 0)
+            {
+                Console.WriteLine("  Cart is empty.");
+                PressAnyKey();
+                return;
+            }
+
+            ViewCart();
+            Console.Write("\n  Enter item number to update (0 to cancel): ");
+            string input = Console.ReadLine();
+
+            if (!int.TryParse(input, out int idx) || idx < 0 || idx > cartCount)
+            {
+                Console.WriteLine("  Invalid input.");
+                PressAnyKey();
+                return;
+            }
+
+            if (idx == 0) return;
+
+            CartItem item  = cart[idx - 1];
+            int maxAllowed = item.Product.Stock + item.Quantity;
+
+            Console.WriteLine($"\n  Current quantity of {item.Product.Name}: {item.Quantity}");
+            Console.Write($"  Enter new quantity (max: {maxAllowed}): ");
+            string qInput = Console.ReadLine();
+
+            if (!int.TryParse(qInput, out int newQty) || newQty <= 0)
+            {
+                Console.WriteLine("  Invalid quantity.");
+                PressAnyKey();
+                return;
+            }
+
+            if (newQty > maxAllowed)
+            {
+                Console.WriteLine($"  Not enough stock. Maximum allowed: {maxAllowed}");
+                PressAnyKey();
+                return;
+            }
+
+            int diff            = newQty - item.Quantity;
+            item.Product.Stock -= diff;
+            item.Quantity       = newQty;
+
+            Console.WriteLine($"  Done! {item.Product.Name} quantity updated to {newQty}.");
+            PressAnyKey();
+        }
+
