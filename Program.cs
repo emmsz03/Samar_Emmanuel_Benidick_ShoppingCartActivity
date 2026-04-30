@@ -537,6 +537,20 @@ namespace ShoppingCartSystem
                 return;
             }
 
+            Console.WriteLine("─────────────  ORDER HISTORY  ────────────");
+            for (int i = 0; i < orderCount; i++)
+                orderHistory[i].PrintSummary(i + 1);
+            Console.WriteLine("──────────────────────────────────────────");
+
+            Console.Write("\n  View full receipt? (Y/N): ");
+            string ans = Console.ReadLine().Trim().ToUpper();
+
+            while (ans != "Y" && ans != "N")
+            {
+                Console.Write("  Invalid input. Please enter Y or N only: ");
+                ans = Console.ReadLine().Trim().ToUpper();
+            }
+
 
             
 
