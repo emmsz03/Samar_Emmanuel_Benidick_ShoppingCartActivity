@@ -526,3 +526,10 @@ namespace ShoppingCartSystem
                 ShowOrderHistory();
         }
 
+        static void ShowOrderHistory()
+        {
+            Console.Clear();
+
+            if (orderCount == 0)
+            {
+
