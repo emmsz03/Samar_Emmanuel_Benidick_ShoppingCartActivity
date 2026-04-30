@@ -132,3 +132,44 @@ static void SearchProduct()
             PressAnyKey();
         }
 
+static void BrowseByCategory()
+        {
+            Console.Clear();
+            Console.WriteLine("─────────────  CATEGORIES  ───────────────");
+            Console.WriteLine("  [1] Electronics");
+            Console.WriteLine("  [2] Clothing");
+            Console.WriteLine("  [3] Food");
+            Console.WriteLine("──────────────────────────────────────────");
+            Console.Write("  Enter choice: ");
+
+            string input = Console.ReadLine();
+            string selected = "";
+
+            if (input == "1")       selected = "Electronics";
+            else if (input == "2")  selected = "Clothing";
+            else if (input == "3")  selected = "Food";
+            else
+            {
+                Console.WriteLine("  Invalid choice.");
+                PressAnyKey();
+                return;
+            }
+
+            Console.Clear();
+            Console.WriteLine($"─────────────  {selected.ToUpper()}  ─────────────");
+            bool found = false;
+            for (int i = 0; i < menu.Length; i++)
+            {
+                if (menu[i].Category == selected)
+                {
+                    menu[i].Display();
+                    found = true;
+                }
+            }
+
+            if (!found)
+                Console.WriteLine("  No products in this category.");
+
+            Console.WriteLine("──────────────────────────────────────────");
+            PressAnyKey();
+        }
